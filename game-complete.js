@@ -2595,14 +2595,36 @@ document.addEventListener('DOMContentLoaded', () => {
                 try {
                     window.game = new CompleteGame();
                     console.log('Game initialized successfully');
-                } catch (error) {
-                    console.error('Error initializing game:', error);
-                    alert('Feil ved lasting av spill. Sjekk konsollen for detaljer.');
-                    // Fjern loading screen selv om det er en feil
+                    
+                    // Ensure loading screen is hidden
                     const loadingScreen = document.getElementById('loadingScreen');
                     if (loadingScreen) {
                         loadingScreen.style.display = 'none';
                     }
+                    
+                    // Dispatch ready event for mobile
+                    window.dispatchEvent(new Event('gameReady'));
+                    
+                } catch (error) {
+                    console.error('Error initializing game:', error);
+                    
+                    // Hide loading screen on error too
+                    const loadingScreen = document.getElementById('loadingScreen');
+                    if (loadingScreen) {
+                        loadingScreen.style.display = 'none';
+                    }
+                    
+                    // Try again after delay on mobile
+                    setTimeout(() => {
+                        try {
+                            window.game = new CompleteGame();
+                            console.log('Game initialized on retry');
+                            window.dispatchEvent(new Event('gameReady'));
+                        } catch (retryError) {
+                            console.error('Game initialization failed on retry:', retryError);
+                            alert('Kunne ikke laste spill. Refresh siden og prøv igjen.');
+                        }
+                    }, 1000);
                 }
             }, 200);
         }

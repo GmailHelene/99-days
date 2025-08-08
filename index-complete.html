@@ -1163,12 +1163,12 @@
     <!-- Game Menu -->
     <div id="gameMenu" class="fade-in">
         <h1>🏕️ Beyond 99 Days</h1>
-        <button class="menu-button" onclick="window.game.showWorldSelection()">🎮 Velg Verden & Start</button>
-        <button class="menu-button" onclick="window.game.loadGame()">💾 Last Inn Spill</button>
-        <button class="menu-button" onclick="window.game.showMultiplayerMenu()">🌐 Multiplayer</button>
-        <button class="menu-button" onclick="window.game.showInstructions()">📖 Hvordan Spille</button>
-        <button class="menu-button" onclick="window.game.showAchievements()">🏆 Prestasjoner & Verdener</button>
-        <button class="menu-button" onclick="window.game.showSettings()">⚙️ Innstillinger</button>
+        <button class="menu-button" onclick="safeGameCall('showWorldSelection')">🎮 Velg Verden & Start</button>
+        <button class="menu-button" onclick="safeGameCall('loadGame')">💾 Last Inn Spill</button>
+        <button class="menu-button" onclick="safeGameCall('showMultiplayerMenu')">🌐 Multiplayer</button>
+        <button class="menu-button" onclick="safeGameCall('showInstructions')">📖 Hvordan Spille</button>
+        <button class="menu-button" onclick="safeGameCall('showAchievements')">🏆 Prestasjoner & Verdener</button>
+        <button class="menu-button" onclick="safeGameCall('showSettings')">⚙️ Innstillinger</button>
     </div>
     
     <!-- Game UI -->
@@ -1533,6 +1533,36 @@
             Forstått! 🎮
         </button>
     </div>
+
+    <script>
+        // Safe game function caller for mobile compatibility
+        function safeGameCall(functionName, ...args) {
+            try {
+                if (window.game && typeof window.game[functionName] === 'function') {
+                    return window.game[functionName](...args);
+                } else {
+                    console.log('Game not ready yet, trying again in 500ms...');
+                    setTimeout(() => safeGameCall(functionName, ...args), 500);
+                }
+            } catch (error) {
+                console.error('Error calling game function:', functionName, error);
+                alert('Spillet laster fortsatt. Prøv igjen om litt...');
+            }
+        }
+
+        // Ensure game loads properly on mobile
+        window.addEventListener('load', function() {
+            setTimeout(() => {
+                if (!window.game) {
+                    console.log('Game not loaded after page load, forcing initialization...');
+                    // Try to reload the script if it failed
+                    const script = document.createElement('script');
+                    script.src = 'game-complete.js';
+                    document.body.appendChild(script);
+                }
+            }, 2000);
+        });
+    </script>
 
     <script src="game-complete.js"></script>
 </body>
