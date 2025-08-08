@@ -8,6 +8,7 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="theme-color" content="#1a1a2e"    <script src="game-complete.js"></script>
     <title>Beyond 99 Days in the Woods</title>
+        <link rel="manifest" href="manifest.json">
     <style>
         * {
             margin: 0;
@@ -348,6 +349,15 @@
         <button class="menu-button" onclick="startNewGame()">🎮 Start Nytt Spill</button>
         <button class="menu-button" onclick="showInstructions()">📖 Hvordan Spille</button>
         <button class="menu-button" onclick="showSettings()">⚙️ Innstillinger</button>
+        <script>
+        // Touch support for menu buttons
+        document.querySelectorAll('.menu-button').forEach(btn => {
+            btn.addEventListener('touchstart', function(e) {
+                e.preventDefault();
+                btn.click();
+            }, {passive: false});
+        });
+        </script>
     </div>
     
     <!-- Game UI -->
