@@ -1,4 +1,7 @@
 {
+  "buildCommand": "",
+  "outputDirectory": "./",
+  "installCommand": "npm install",
   "functions": {
     "api/socketio.js": {
       "maxDuration": 300
