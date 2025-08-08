@@ -1,38 +1,19 @@
 {
-  "version": 2,
-  "name": "beyond-99-days-multiplayer",
-  "routes": [
-    {
-      "src": "/",
-      "dest": "/index-complete.html"
-    },
-    {
-      "src": "/api/(.*)",
-      "dest": "/api/$1"
-    },
-    {
-      "src": "/sw.js",
-      "headers": {
-        "Service-Worker-Allowed": "/"
-      }
-    },
-    {
-      "src": "/(.*\\.(js|css|svg|png|jpg|jpeg|gif|ico|json))",
-      "dest": "/$1",
-      "headers": {
-        "Cache-Control": "public, max-age=31536000, immutable"
-      }
-    },
-    {
-      "src": "/(.*)",
-      "dest": "/index-complete.html"
-    }
-  ],
   "functions": {
     "api/socketio.js": {
       "maxDuration": 300
     }
   },
+  "rewrites": [
+    {
+      "source": "/",
+      "destination": "/index-complete.html"
+    },
+    {
+      "source": "/((?!api/).*)",
+      "destination": "/index-complete.html"
+    }
+  ],
   "headers": [
     {
       "source": "/api/(.*)",
