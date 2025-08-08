@@ -156,6 +156,12 @@
             box-shadow: 0 4px 15px rgba(74, 144, 226, 0.3);
             position: relative;
             overflow: hidden;
+            touch-action: manipulation;
+            -webkit-tap-highlight-color: rgba(74, 144, 226, 0.3);
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
         }
 
         .menu-button::before {
@@ -169,17 +175,36 @@
             transition: left 0.5s;
         }
 
-        .menu-button:hover::before {
+        .menu-button:hover::before,
+        .menu-button:focus::before {
             left: 100%;
         }
 
-        .menu-button:hover {
+        .menu-button:hover,
+        .menu-button:focus {
             transform: translateY(-2px);
             box-shadow: 0 6px 25px rgba(74, 144, 226, 0.4);
         }
 
         .menu-button:active {
             transform: translateY(0);
+            background: linear-gradient(135deg, var(--secondary-color), var(--primary-color));
+        }
+
+        /* Mobile-specific button improvements */
+        @media (max-width: 768px) {
+            .menu-button {
+                padding: 20px 25px;
+                min-height: 60px;
+                font-size: 18px;
+                margin: 15px 0;
+                -webkit-tap-highlight-color: transparent;
+            }
+            
+            .menu-button:active {
+                transform: scale(0.98);
+                background: linear-gradient(135deg, #357abd, #2968a3);
+            }
         }
 
         /* Game UI */
@@ -1163,12 +1188,12 @@
     <!-- Game Menu -->
     <div id="gameMenu" class="fade-in">
         <h1>🏕️ Beyond 99 Days</h1>
-        <button class="menu-button" onclick="safeGameCall('showWorldSelection')">🎮 Velg Verden & Start</button>
-        <button class="menu-button" onclick="safeGameCall('loadGame')">💾 Last Inn Spill</button>
-        <button class="menu-button" onclick="safeGameCall('showMultiplayerMenu')">🌐 Multiplayer</button>
-        <button class="menu-button" onclick="safeGameCall('showInstructions')">📖 Hvordan Spille</button>
-        <button class="menu-button" onclick="safeGameCall('showAchievements')">🏆 Prestasjoner & Verdener</button>
-        <button class="menu-button" onclick="safeGameCall('showSettings')">⚙️ Innstillinger</button>
+        <button class="menu-button" data-function="showWorldSelection">🎮 Velg Verden & Start</button>
+        <button class="menu-button" data-function="loadGame">💾 Last Inn Spill</button>
+        <button class="menu-button" data-function="showMultiplayerMenu">🌐 Multiplayer</button>
+        <button class="menu-button" data-function="showInstructions">📖 Hvordan Spille</button>
+        <button class="menu-button" data-function="showAchievements">🏆 Prestasjoner & Verdener</button>
+        <button class="menu-button" data-function="showSettings">⚙️ Innstillinger</button>
     </div>
     
     <!-- Game UI -->
@@ -1535,10 +1560,25 @@
     </div>
 
     <script>
+        // Enhanced mobile touch support
+        let touchStartTime = 0;
+        
         // Safe game function caller for mobile compatibility
         function safeGameCall(functionName, ...args) {
+            console.log('safeGameCall called:', functionName);
+            
+            // Visual feedback for mobile
+            const button = event ? event.target : null;
+            if (button) {
+                button.style.backgroundColor = '#357abd';
+                setTimeout(() => {
+                    button.style.backgroundColor = '';
+                }, 200);
+            }
+            
             try {
                 if (window.game && typeof window.game[functionName] === 'function') {
+                    console.log('Calling game function:', functionName);
                     return window.game[functionName](...args);
                 } else {
                     console.log('Game not ready yet, trying again in 500ms...');
@@ -1550,8 +1590,61 @@
             }
         }
 
+        // Better mobile touch handling
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('DOM loaded, setting up mobile touch handlers...');
+            
+            // Add touch events to all menu buttons
+            const menuButtons = document.querySelectorAll('.menu-button');
+            console.log('Found menu buttons:', menuButtons.length);
+            
+            menuButtons.forEach((button, index) => {
+                console.log('Setting up button', index, button.textContent);
+                
+                // Add touchstart for better mobile responsiveness
+                button.addEventListener('touchstart', function(e) {
+                    console.log('Touch start on button:', this.textContent);
+                    touchStartTime = Date.now();
+                    this.style.transform = 'scale(0.98)';
+                    this.style.backgroundColor = '#357abd';
+                }, { passive: true });
+                
+                button.addEventListener('touchend', function(e) {
+                    console.log('Touch end on button:', this.textContent);
+                    e.preventDefault();
+                    this.style.transform = '';
+                    this.style.backgroundColor = '';
+                    
+                    // Only trigger if it's a quick tap (not a scroll)
+                    if (Date.now() - touchStartTime < 500) {
+                        const functionName = this.getAttribute('data-function');
+                        console.log('Calling function via touch:', functionName);
+                        if (functionName) {
+                            safeGameCall(functionName);
+                        }
+                    }
+                }, { passive: false });
+                
+                button.addEventListener('touchcancel', function(e) {
+                    console.log('Touch cancel on button:', this.textContent);
+                    this.style.transform = '';
+                    this.style.backgroundColor = '';
+                });
+                
+                // Also add click event as backup
+                button.addEventListener('click', function(e) {
+                    console.log('Click on button:', this.textContent);
+                    const functionName = this.getAttribute('data-function');
+                    if (functionName) {
+                        safeGameCall(functionName);
+                    }
+                });
+            });
+        });
+
         // Ensure game loads properly on mobile
         window.addEventListener('load', function() {
+            console.log('Page loaded, checking game...');
             setTimeout(() => {
                 if (!window.game) {
                     console.log('Game not loaded after page load, forcing initialization...');
