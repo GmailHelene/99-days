@@ -1,0 +1,27 @@
+{
+  "name": "Beyond 99 Days - Survival Game",
+  "short_name": "Beyond99Days",
+  "description": "Komplett overlevingsspill med matte-utfordringer",
+  "start_url": "./index-complete.html",
+  "display": "standalone",
+  "background_color": "#1a1a2e",
+  "theme_color": "#4a90e2",
+  "orientation": "any",
+  "scope": "./",
+  "lang": "no",
+  "categories": ["games", "education"],
+  "icons": [
+    {
+      "src": "./favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ],
+  "features": [
+    "Cross Platform",
+    "Math Learning", 
+    "Offline Play",
+    "Save Progress"
+  ]
+}

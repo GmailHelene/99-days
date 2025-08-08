@@ -1,0 +1,43 @@
+{
+  "name": "beyond-99-days-multiplayer",
+  "version": "2.1.0",
+  "description": "Beyond 99 Days - Multiplayer Survival Math Game with PWA support",
+  "main": "index-complete.html",
+  "type": "module",
+  "scripts": {
+    "dev": "vercel dev",
+    "build": "echo 'Static files ready'",
+    "start": "vercel dev --listen 3000",
+    "deploy": "vercel --prod",
+    "test": "echo 'No tests specified'"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "socket.io": "^4.8.1",
+    "socket.io-client": "^4.8.1",
+    "ws": "^8.14.2"
+  },
+  "devDependencies": {
+    "@vercel/node": "^3.0.7",
+    "vercel": "^32.5.0"
+  },
+  "keywords": [
+    "game",
+    "survival",
+    "mathematics",
+    "education",
+    "multiplayer",
+    "pwa",
+    "javascript",
+    "vercel"
+  ],
+  "author": "Beyond 99 Days Team",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/your-username/beyond-99-days"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
