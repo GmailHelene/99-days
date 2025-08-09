@@ -120,12 +120,14 @@ body {
 
 @media (max-width: 600px) {
     #infoPanel {
-        top: 10px;
+        top: auto;
+        bottom: 10px;
         right: 10px;
         min-width: 120px;
         max-width: 90vw;
         max-height: 30vh;
         font-size: 13px;
         padding: 6px;
+        z-index: 101;
     }
 }
