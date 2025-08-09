@@ -1,3 +1,8 @@
+// Dummy pauseGame for HTML button
+function pauseGame() {
+    // Pause-funksjon ikke implementert ennå
+    console.log('Pause-knapp trykket (funksjon ikke implementert)');
+}
 // Beyond 99 Days in the Woods - Utvidet versjon med mer funksjonalitet
 
 // Spillkonfigurasjon

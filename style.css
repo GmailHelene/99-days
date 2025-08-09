@@ -98,3 +98,34 @@ body {
     background: rgba(0, 0, 0, 0.9);
     display: none; /* Skjult som standard, vises på mobil */
     justify-content: space-between;
+}
+
+/* InfoPanel - desktop og mobil */
+#infoPanel {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: rgba(0, 0, 0, 0.8);
+    padding: 10px;
+    border-radius: 12px;
+    border: 2px solid #3498db;
+    min-width: 160px;
+    max-width: 80vw;
+    max-height: 40vh;
+    overflow-y: auto;
+    backdrop-filter: blur(5px);
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.4);
+    z-index: 100;
+}
+
+@media (max-width: 600px) {
+    #infoPanel {
+        top: 10px;
+        right: 10px;
+        min-width: 120px;
+        max-width: 90vw;
+        max-height: 30vh;
+        font-size: 13px;
+        padding: 6px;
+    }
+}
