@@ -54,11 +54,6 @@
       "dest": "/index-complete.html"
     }
   ],
-  "functions": {
-    "api/socketio.js": {
-      "maxDuration": 300
-    }
-  },
   "headers": [
     {
       "source": "/api/(.*)",
